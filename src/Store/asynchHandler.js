@@ -1,4 +1,4 @@
-import * as actionCreators from '/actionCreators.js'
+import * as actionCreators from 'actionCreators.js'
 
 export const loginHandler = ({ credentials, firebase }) => (dispatch, getState) => {
     firebase.auth().signInWithEmailAndPassword(
