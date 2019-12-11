@@ -12,6 +12,7 @@
     "react-dom": "^16.11.0",
     "react-flip-move": "^3.0.4",
     "react-konva": "^16.10.1-0",
+    "react-konva-anchors": "^0.2.9",
     "react-materialize": "^3.4.1",
     "react-moment": "^0.9.6",
     "react-redux": "^7.1.1",

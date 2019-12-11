@@ -27,9 +27,9 @@ class HomeScreen extends Component {
     };
 
     render() {
-        if (!this.props.auth.uid) {
-            return <Redirect to="/login" />;
-        }
+        // if (!this.props.auth.uid) {
+        //     return <Redirect to="/login" />;
+        // }
 
         return (
             <div className="dashboard container">
@@ -45,7 +45,7 @@ class HomeScreen extends Component {
                         </div>
                         
                         <div className="home_new_list_container">
-                                <button className="home_new_list_button" onClick={this.handleNewList}>
+                                <button className="home_new_list_button" >
                                     Create a New To Do List
                                 </button>
                         </div>

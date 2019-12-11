@@ -16,9 +16,9 @@ class LoggedInLinks extends React.Component {
   render() {
     const { profile } = this.props;
     return (
-      <ul className="right">
-        <li><NavLink to="/" onClick={this.handleLogout}>Log Out</NavLink></li> {/* I left NavLink instead of anchor tag because I'm using airbnb eslint rules */}
-        <li><NavLink to="/" className="btn btn-floating pink lighten-1">{profile.initials}</NavLink></li>
+      <ul>
+        <li style={{display:"inline", margin:"3px"}}><NavLink to="/" onClick={this.handleLogout}>Log Out</NavLink></li> {/* I left NavLink instead of anchor tag because I'm using airbnb eslint rules */}
+        <li style={{display:"inline", margin:"3px"}}><NavLink to="/" className="btn btn-floating pink lighten-1">{profile.initials}</NavLink></li>
       </ul>
     );
   };

@@ -18,6 +18,23 @@ body {
   font-family: 'Lexend Exa';
 }
 
+.test {
+  background: red;
+}
+
+.test2 {
+  background: blue;
+}
+
+.sidebar-left,
+.sidebar-right {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.edit_view {
+  height: 100%;
+}
 div.banner {
   background-image: linear-gradient(to bottom,         
   #b8b808, #636723);
@@ -31,6 +48,7 @@ div.banner {
   padding-top: 5%;
   padding-bottom: 5%;
 }
+
 
 .home_new_list_button {
   font-size: 32pt;
