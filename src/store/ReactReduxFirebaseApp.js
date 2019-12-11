@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createFirestoreInstance, reduxFirestore, getFirestore } from 'redux-firestore';
 import { ReactReduxFirebaseProvider, getFirebase } from 'react-redux-firebase';
-import firebase from './firebaseConfig';
-import rootReducer from './rootReducer';
+import firebase from '../config/firebaseConfig';
+import rootReducer from './reducers/rootReducer';
 import App from '../App';
 
 class ReactReduxFirebaseApp extends React.Component {

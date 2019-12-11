@@ -1,4 +1,4 @@
-import * as actionCreators from './actionCreators'
+import * as actionCreators from '../actions/actionCreators'
 
 // REDUCERS ARE CALLED WHEN AN ACTION IS DISPATCHED,
 // THEIR JOB IS TO ADVANCE THE STATE. THEY WILL UPDATE
