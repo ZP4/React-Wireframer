@@ -50,12 +50,7 @@ const Canvas = () => {
                             onSelect={() => {
                                 selectShape(rect.id);
                             }}
-                            onChange={newAttrs => {
-                                const rects = rectangles.slice();
-                                rects[i] = newAttrs;
-                                setRectangles(rects);
-                                console.log(rectangles)
-                            }}
+
                         />
                     );
                 })}

@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import { Rect, Text, Group, Transformer} from 'react-konva'
+import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 
-const CanvasButton = ({ shapeProps, isSelected, onSelect, onChange }) => {
+const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
     const [shape, setShape] = useState(shapeProps);
+    const [drag, setDrag] = useState(false);
+    const [transform, setTransform] = useState(false);
 
     React.useEffect(() => {
         if (isSelected) {
@@ -15,15 +17,20 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, onChange }) => {
         }
     }, [isSelected]);
 
+
     return (
         <React.Fragment>
+            <Group>
                 <Group
                     draggable
                     onClick={onSelect}
                     ref={shapeRef}
                     {...shape}
+
+                    onDragStart={() => {setDrag(true)}}
+                    onDragEnd={() => {setDrag(false);}}
                     onDragMove={e => {
-                        console.log("lol");
+                        console.log("drag");
                         onSelect();
                         let s = {
                             ...shape,
@@ -33,23 +40,16 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, onChange }) => {
                         setShape(s);
                     }}
 
+                    onTransformStart={() => {setTransform(true)}}
+                    onTransformEnd={() => {setTransform(false)}}
                     onTransform = {e => {
-                        console.log("ha");
+                        console.log("trans");
                         const node = shapeRef.current;
                         const scaleX = node.scaleX();
                         const scaleY = node.scaleY();
-                        console.log(scaleX);
 
                         node.scaleX(1);
                         node.scaleY(1);
-                        // onChange({
-                        //     ...shapeProps,
-                        //     x: node.x(),
-                        //     y: node.y(),
-                        //     // set minimal value
-                        //     width: Math.max(5, node.width() * scaleX),
-                        //     height: Math.max(node.height() * scaleY)
-                        // });
                         let s = {
                             ...shape,
                             x: node.x(),
@@ -85,6 +85,45 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, onChange }) => {
                     anchorSize={12}
                     padding={2}
                 />}
+                {isSelected && <Group
+                    x={shape.x}
+                    y={shape.y}
+                    offsetX={(shape.width+15)*-1}
+                    offsetY={(shape.height+15)*-1}
+                >
+                    <Label
+                        visible={drag}
+                    >
+                        <Tag
+                            fill="black"
+                        />
+                        <Text
+                            align="center"
+                            verticalAlign="middle"
+                            fontSize={16}
+                            text={"X: "+shape.x.toFixed(0)+"   Y: "+shape.y.toFixed(0)}
+                            fill="white"
+                            padding={5}
+                        />
+                    </Label>
+                    <Label
+                        visible={transform}
+                    >
+                        <Tag
+                            fill="black"
+                        />
+                        <Text
+                            align="center"
+                            verticalAlign="middle"
+                            fontSize={16}
+                            text={"H: "+shape.height.toFixed(0)+"   W: "+shape.width.toFixed(0)}
+                            fill="white"
+                            padding={5}
+                        />
+                    </Label>
+                </Group>}
+
+            </Group>
         </React.Fragment>
 
     );
