@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Rect, Text, Group, Transformer} from 'react-konva'
 
 const CanvasButton = ({ shapeProps, isSelected, onSelect, onChange }) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
+
+    const [shape, setShape] = useState(shapeProps);
 
     React.useEffect(() => {
         if (isSelected) {
@@ -15,61 +17,76 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, onChange }) => {
 
     return (
         <React.Fragment>
-            <Group
-            draggable
-            >
-                <Rect
+                <Group
+                    draggable
                     onClick={onSelect}
                     ref={shapeRef}
-                    {...shapeProps}
-
-                    onDragEnd={e => {
-                        onChange({
-                            ...shapeProps,
+                    {...shape}
+                    onDragMove={e => {
+                        console.log("lol");
+                        onSelect();
+                        let s = {
+                            ...shape,
                             x: e.target.x(),
                             y: e.target.y()
-                        });
+                        };
+                        setShape(s);
                     }}
-                    onTransformEnd={e => {
-                        // transformer is changing scale of the node
-                        // and NOT its width or height
-                        // but in the store we have only width and height
-                        // to match the data better we will reset scale on transform end
+
+                    onTransform = {e => {
+                        console.log("ha");
                         const node = shapeRef.current;
                         const scaleX = node.scaleX();
                         const scaleY = node.scaleY();
+                        console.log(scaleX);
 
-                        // we will reset it back
                         node.scaleX(1);
                         node.scaleY(1);
-                        onChange({
-                            ...shapeProps,
+                        // onChange({
+                        //     ...shapeProps,
+                        //     x: node.x(),
+                        //     y: node.y(),
+                        //     // set minimal value
+                        //     width: Math.max(5, node.width() * scaleX),
+                        //     height: Math.max(node.height() * scaleY)
+                        // });
+                        let s = {
+                            ...shape,
                             x: node.x(),
                             y: node.y(),
-                            // set minimal value
                             width: Math.max(5, node.width() * scaleX),
                             height: Math.max(node.height() * scaleY)
-                        });
+                        };
+                        setShape(s);
                     }}
-                    width={60}
-                    height={20}
-                    fill="#89b717"
-                    stroke="black"
-                    strokeWidth={1}
-                    cornerRadius={5}
-                />
-                <Text
-                    offsetX={-15}
-                    offsetY={-5}
-                    align="center"
-                    text="Gasd"
-                    fontSize={13}
-                />
-                {isSelected && <Transformer ref={trRef} />}
-            </Group>
-
+                >
+                    <Rect
+                        strokeScaleEnabled={false}
+                        height={shape.height}
+                        width={shape.width}
+                        stroke="black"
+                        fill={shapeProps.fill}
+                        strokeWidth={1}
+                        cornerRadius={5}
+                    />
+                    <Text
+                        height={shape.height}
+                        width={shape.width}
+                        align="center"
+                        verticalAlign="middle"
+                        text="BOIasd"
+                        fontSize={13}
+                    />
+                </Group>
+                {isSelected && <Transformer
+                    ref={trRef}
+                    rotateAnchorOffset={25}
+                    rotationSnaps={[0, 90, 180,270]}
+                    anchorSize={12}
+                    padding={2}
+                />}
         </React.Fragment>
 
     );
-}
+};
 export default CanvasButton;
