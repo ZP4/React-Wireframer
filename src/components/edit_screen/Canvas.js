@@ -1,18 +1,18 @@
-import React, {useState} from 'react';
-import { Stage, Layer, Text, Star, Rect} from 'react-konva';
+import React, { useState, } from 'react';
+import { Stage, Layer, Rect} from 'react-konva';
 import CanvasButton from "../shapes/CanvasButton";
 let initialRectangle = [
     {
-        x: 10,
-        y: 10,
+        x: 2770,
+        y: 2770,
         width: 100,
         height: 100,
         fill: 'red',
         id: 'rect1'
     },
     {
-        x: 150,
-        y: 150,
+        x: 2640,
+        y: 2550,
         width: 200,
         height: 200,
         fill: 'green',
@@ -21,17 +21,25 @@ let initialRectangle = [
 ];
 const Canvas = () => {
 
-    const [canvasHeight] = useState(60);
-    const [canvasWidth] = useState(120);
+    const [canvasHeight, setCanvasHeight] = useState(800);
+    const [canvasWidth, setCanvasWidth] = useState(1000);
+    const [originX, setOriginX] = useState(2640+(canvasWidth/2));
+    const [originY, setOriginY] = useState(2550+(canvasHeight/2));
+    const [zoom, setZoom] = useState(1);
 
     const [selectedId, selectShape] = React.useState(null);
     const [rectangles, setRectangles] = React.useState(initialRectangle);
 
+
+
     return (
 
         <Stage
-            width={window.innerWidth}
-            height={window.innerHeight}
+            className="stage"
+            width={5000}
+            height={5000}
+            scaleX={zoom}
+            scaleY={zoom}
             onMouseDown={e => {
                 // deselect when clicked on empty area
                 const clickedOnEmpty = e.target === e.target.getStage();
@@ -40,7 +48,14 @@ const Canvas = () => {
                 }
             }}>
 
-            <Layer className="test2">
+            <Layer>
+                <Rect
+                    width={canvasWidth}
+                    height={canvasHeight}
+                    x={2640}
+                    y={2550}
+                    fill="white"
+                />
                 {rectangles.map((rect, i) => {
                     return (
                         <CanvasButton
