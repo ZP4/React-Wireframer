@@ -10,7 +10,7 @@ class LoginScreen extends Component {
   state = {
     email: '',
     password: '',
-  }
+  };
 
   handleChange = (e) => {
     const { target } = e;
@@ -19,7 +19,7 @@ class LoginScreen extends Component {
       ...state,
       [target.id]: target.value,
     }));
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ class LoginScreen extends Component {
     };
 
     props.login(authData);
-  }
+  };
 
   render() {
     const { auth, authError } = this.props;
