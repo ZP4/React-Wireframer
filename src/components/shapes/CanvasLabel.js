@@ -61,6 +61,8 @@ const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         };
                         setShape(s);
                     }}
+                    offsetX={shape.width/2}
+                    offsetY={shape.height/2}
                     >
                     <Tag
                         strokeScaleEnabled={false}
@@ -73,10 +75,10 @@ const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy}) => {
 
                     />
                     <Text
-                        offsetX={-4}
-                        offsetY={-4}
-                        height={shape.height-8}
-                        width={shape.width-8}
+                        offsetX={-3}
+                        offsetY={-3}
+                        height={shape.height-6}
+                        width={shape.width-6}
                         align={shape.align}
                         verticalAlign={shape.verticalAlign}
                         text={shape.text}
@@ -130,10 +132,8 @@ const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     </Label>
                 </Group>}
                 {dummy && <Group
-                    x={shape.x}
-                    y={shape.y}
-                    offsetX={(((shape.width)*-1)/2)+(shape.x/2)}
-                    offsetY={(shape.height+15)*-1}
+                    x={shape.x-25}
+                    y={shape.y+50}
                 >
                     <Label
                         visible={dummy}

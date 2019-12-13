@@ -4,6 +4,7 @@ import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
+    const test = React.useRef();
 
     const [shape, setShape] = useState(shapeProps);
     const [drag, setDrag] = useState(false);
@@ -70,12 +71,14 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         fill={shapeProps.fill}
                         strokeWidth={2}
                         cornerRadius={3}
+                        offsetX={shape.width/2}
+                        offsetY={shape.height/2}
                     />
                     <Text
-                        offsetX={-4}
-                        offsetY={-4}
-                        height={shape.height-8}
-                        width={shape.width-8}
+                        offsetX={(shape.width/2)-3}
+                        offsetY={(shape.height/2)-3}
+                        height={shape.height-6}
+                        width={shape.width-6}
                         align="left"
                         verticalAlign="middle"
                         text="Input"
@@ -129,10 +132,10 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     </Label>
                 </Group>}
                 {dummy && <Group
-                    x={shape.x}
-                    y={shape.y}
-                    offsetX={(((shape.width)*-1)/2)+(shape.x/2)}
-                    offsetY={(shape.height+15)*-1}
+                    draggable
+                    x={shape.x-40}
+                    y={shape.y+40}
+
                 >
                     <Label
                         visible={dummy}

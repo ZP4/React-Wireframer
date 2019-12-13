@@ -61,6 +61,8 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         };
                         setShape(s);
                     }}
+                    offsetX={shape.width/2}
+                    offsetY={shape.height/2}
                 >
                 </Rect>
                 {isSelected && <Transformer
@@ -72,10 +74,8 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     rotateEnabled={false}
                 />}
                 {isSelected && <Group
-                    x={shape.x}
-                    y={shape.y}
-                    offsetX={(shape.width+15)*-1}
-                    offsetY={(shape.height+15)*-1}
+                    x={shape.x+((shape.width/2)+15)}
+                    y={shape.y+((shape.height/2)+15)}
                 >
                     <Label
                         visible={drag}
@@ -111,10 +111,9 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy}) => {
                 </Group>}
 
                 {dummy && <Group
-                x={shape.x}
-                y={shape.y}
-                offsetX={(((shape.width)*-1)/2)+(shape.x-10)}
-                offsetY={(shape.height+15)*-1}
+                x={shape.x-40}
+                y={shape.y+75}
+
                 >
                 <Label
                     visible={dummy}

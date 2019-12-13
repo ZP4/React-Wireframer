@@ -9,6 +9,7 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
     const [drag, setDrag] = useState(false);
     const [transform, setTransform] = useState(false);
 
+
     useEffect(() => {
         if (isSelected) {
             // we need to attach transformer manually
@@ -17,13 +18,13 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
         }
     }, [isSelected]);
 
-
     return (
         <React.Fragment>
             <Group
                 onClick={dummy? () => {
                     console.log("CLICKED")
                 } : null}
+
             >
                 <Group
                     draggable={!dummy}
@@ -35,6 +36,7 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     onDragMove={e => {
                         console.log("drag");
                         onSelect();
+
                         let s = {
                             ...shape,
                             x: e.target.x(),
@@ -71,17 +73,20 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         fill={shapeProps.fill}
                         strokeWidth={1}
                         cornerRadius={5}
+                        offsetX={shape.width/2}
+                        offsetY={shape.height/2}
                     />
                     <Text
-                        offsetX={-4}
-                        offsetY={-4}
-                        height={shape.height-8}
-                        width={shape.width-8}
+                        offsetX={(shape.width/2)-3}
+                        offsetY={(shape.height/2)-3}
+                        height={shape.height-6}
+                        width={shape.width-6}
                         align="center"
                         verticalAlign="middle"
                         text="Submit"
                         fontSize={13}
                         padding={4}
+
                     />
                 </Group>
                 {isSelected && <Transformer
@@ -90,13 +95,13 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     rotationSnaps={[0, 90, 180,270]}
                     anchorSize={12}
                     padding={2}
-                    rotateEnabled={false}
+
                 />}
                 {isSelected && <Group
-                    x={shape.x}
-                    y={shape.y}
-                    offsetX={(shape.width+15)*-1}
-                    offsetY={(shape.height+15)*-1}
+                    x={shape.x+((shape.width/2)+15)}
+                    y={shape.y+((shape.height/2)+15)}
+
+
                 >
                     <Label
                         visible={drag}
@@ -115,7 +120,7 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     </Label>
                     <Label
                         visible={transform}
-                        rotationDeg={0}
+
                     >
                         <Tag
                             fill="black"
@@ -132,10 +137,8 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     </Label>
                 </Group>}
                 {dummy && <Group
-                    x={shape.x}
-                    y={shape.y}
-                    offsetX={(((shape.width)*-1)/2)+(shape.x/2)}
-                    offsetY={(shape.height+15)*-1}
+                    x={shape.x-30}
+                    y={shape.y+50}
                 >
                     <Label
                         visible={dummy}
