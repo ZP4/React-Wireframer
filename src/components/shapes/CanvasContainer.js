@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 
-const CanvasContainer = ({ shapeProps, isSelected, onSelect}) => {
+const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -19,11 +19,15 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect}) => {
 
     return (
         <React.Fragment>
-            <Group>
+            <Group
+                onClick={dummy? () => {
+                    console.log("CLICKED")
+                } : null}
+            >
                 <Rect
-                    draggable
-                    onClick={onSelect}
-                    ref={shapeRef}
+                    draggable={!dummy}
+                    onClick={dummy? null : onSelect}
+                    ref={dummy? null:shapeRef}
                     {...shape}
                     onDragStart={() => {setDrag(true)}}
                     onDragEnd={() => {setDrag(false);}}
@@ -65,6 +69,7 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect}) => {
                     rotationSnaps={[0, 90, 180,270]}
                     anchorSize={12}
                     padding={2}
+                    rotateEnabled={false}
                 />}
                 {isSelected && <Group
                     x={shape.x}
@@ -74,6 +79,7 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect}) => {
                 >
                     <Label
                         visible={drag}
+                        rotation={0}
                     >
                         <Tag
                             fill="black"
@@ -103,6 +109,29 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect}) => {
                         />
                     </Label>
                 </Group>}
+
+                {dummy && <Group
+                x={shape.x}
+                y={shape.y}
+                offsetX={(((shape.width)*-1)/2)+(shape.x-10)}
+                offsetY={(shape.height+15)*-1}
+                >
+                <Label
+                    visible={dummy}
+                >
+                    <Tag
+                        fill="lightgrey"
+                    />
+                    <Text
+                        align="center"
+                        verticalAlign="middle"
+                        fontSize={16}
+                        text="Container"
+                        fill="black"
+                        padding={5}
+                    />
+                </Label>
+            </Group>}
 
             </Group>
         </React.Fragment>

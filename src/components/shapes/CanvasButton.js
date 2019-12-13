@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 
-const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
+const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -9,7 +9,7 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
     const [drag, setDrag] = useState(false);
     const [transform, setTransform] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (isSelected) {
             // we need to attach transformer manually
             trRef.current.setNode(shapeRef.current);
@@ -20,13 +20,16 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
 
     return (
         <React.Fragment>
-            <Group>
+            <Group
+                onClick={dummy? () => {
+                    console.log("CLICKED")
+                } : null}
+            >
                 <Group
-                    draggable
-                    onClick={onSelect}
-                    ref={shapeRef}
+                    draggable={!dummy}
+                    onClick={dummy? null : onSelect}
+                    ref={dummy? null:shapeRef}
                     {...shape}
-
                     onDragStart={() => {setDrag(true)}}
                     onDragEnd={() => {setDrag(false);}}
                     onDragMove={e => {
@@ -54,8 +57,8 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
                             ...shape,
                             x: node.x(),
                             y: node.y(),
-                            width: Math.max(5, node.width() * scaleX),
-                            height: Math.max(node.height() * scaleY)
+                            width: Math.max(20, node.width() * scaleX),
+                            height: Math.max(20, node.height() * scaleY)
                         };
                         setShape(s);
                     }}
@@ -70,12 +73,15 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
                         cornerRadius={5}
                     />
                     <Text
-                        height={shape.height}
-                        width={shape.width}
+                        offsetX={-4}
+                        offsetY={-4}
+                        height={shape.height-8}
+                        width={shape.width-8}
                         align="center"
                         verticalAlign="middle"
-                        text="BOIasd"
+                        text="Submit"
                         fontSize={13}
+                        padding={4}
                     />
                 </Group>
                 {isSelected && <Transformer
@@ -84,6 +90,7 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
                     rotationSnaps={[0, 90, 180,270]}
                     anchorSize={12}
                     padding={2}
+                    rotateEnabled={false}
                 />}
                 {isSelected && <Group
                     x={shape.x}
@@ -108,9 +115,11 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
                     </Label>
                     <Label
                         visible={transform}
+                        rotationDeg={0}
                     >
                         <Tag
                             fill="black"
+
                         />
                         <Text
                             align="center"
@@ -122,7 +131,28 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect}) => {
                         />
                     </Label>
                 </Group>}
-
+                {dummy && <Group
+                    x={shape.x}
+                    y={shape.y}
+                    offsetX={(((shape.width)*-1)/2)+(shape.x/2)}
+                    offsetY={(shape.height+15)*-1}
+                >
+                    <Label
+                        visible={dummy}
+                    >
+                        <Tag
+                            fill="lightgrey"
+                        />
+                        <Text
+                            align="center"
+                            verticalAlign="middle"
+                            fontSize={16}
+                            text="Button"
+                            fill="black"
+                            padding={5}
+                        />
+                    </Label>
+                </Group>}
             </Group>
         </React.Fragment>
 
