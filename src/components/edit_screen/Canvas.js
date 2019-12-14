@@ -3,23 +3,23 @@ import { Stage, Layer, Rect} from 'react-konva';
 import CanvasButton from "../shapes/CanvasButton";
 let initialRectangle = [
     {
-        x: 2770,
-        y: 2770,
+        x: 0,
+        y: 0,
         width: 100,
         height: 100,
         fill: 'red',
         id: 'rect1'
     },
     {
-        x: 2640,
-        y: 2550,
+        x: 11,
+        y: 11,
         width: 200,
         height: 200,
         fill: 'green',
         id: 'rect2'
     }
 ];
-const Canvas = () => {
+const Canvas = ({zoomInput }) => {
 
     const [canvasHeight, setCanvasHeight] = useState(800);
     const [canvasWidth, setCanvasWidth] = useState(1000);
@@ -36,6 +36,8 @@ const Canvas = () => {
 
         <Stage
             className="stage"
+            offsetY={-2500}
+            offsetX={-2500}
             width={5000}
             height={5000}
             scaleX={zoom}
@@ -46,15 +48,27 @@ const Canvas = () => {
                 if (clickedOnEmpty) {
                     selectShape(null);
                 }
-            }}>
+            }}
+        >
+            <Layer
+                onMouseDown={e => {
+                    const clickedOnEmpty = e.target === e.target.getLayer();
+                    if (clickedOnEmpty) {
+                        selectShape(null);
+                    }
 
-            <Layer>
+                }}
+            >
                 <Rect
                     width={canvasWidth}
                     height={canvasHeight}
-                    x={2640}
-                    y={2550}
+                    x={0}
+                    y={0}
                     fill="white"
+                    onMouseDown={e => {
+                        selectShape(null);
+                    }}
+
                 />
                 {rectangles.map((rect, i) => {
                     return (

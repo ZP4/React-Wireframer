@@ -1,8 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import todoJson from './TestTodoListData.json'
 import { getFirestore } from 'redux-firestore';
 import {Redirect} from "react-router-dom";
+import {firebaseConnect, firestoreConnect} from 'react-redux-firebase';
 
 class DatabaseTester extends React.Component {
     _isMounted= true;
@@ -58,10 +60,11 @@ class DatabaseTester extends React.Component {
 
     render() {
         const { auth } = this.props;
-        if (auth.uid) {
+        console.log(this.props.user);
+        if (!auth.uid || this.props.user === 0) {
             if(this.state.seconds <= 0) {
                 return (
-                    <Redirect to="/"/>
+                    <Redirect to="/login"/>
                 );
             }
             else {
@@ -85,8 +88,17 @@ class DatabaseTester extends React.Component {
 const mapStateToProps = function (state) {
     return {
         auth: state.firebase.auth,
-        firebase: state.firebase
+        firebase: state.firebase,
+        user: state.firestore.ordered.users && state.firestore.ordered.users[0].admin
     };
 };
 
-export default connect(mapStateToProps)(DatabaseTester);
+export default compose(
+    connect(({ firebase: { auth } }) => ({ auth })),
+    firestoreConnect(props => {
+        return [{
+            collection: 'users', doc: props.auth.uid
+        }]
+    }),
+    connect(mapStateToProps),
+)(DatabaseTester);

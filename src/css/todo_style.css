@@ -18,18 +18,23 @@ body {
   font-family: 'Lexend Exa';
 }
 
-.test {
-  background: red;
-}
-
-.test2 {
-  background: blue;
+.stage {
 }
 
 .sidebar-left,
 .sidebar-right {
+  /*border-left: 1px solid #e8e8e8; */
+  background: #fff;
   overflow-x: hidden;
   overflow-y: auto;
+  height: 100%;
+}
+
+.sidebar-left {
+  display: inline-flex;
+  flex-flow: column;
+  border-right: 1px solid #e8e8e8;
+  background: #fff;
 }
 
 .edit_view {
@@ -48,6 +53,17 @@ div.banner {
   padding-top: 5%;
   padding-bottom: 5%;
 }
+
+.menu-separator {
+   opacity: .8;
+   display: inline-block;
+  background: black;
+   border: 0;
+   height:1rem;
+   margin-right: .5rem;
+   margin-left: .5rem;
+   width: 2px;
+ }
 
 
 .home_new_list_button {

@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
+import {Input} from "antd";
+import Portal from "../../core/Portal";
 
 const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
     const shapeRef = React.useRef();
@@ -8,6 +10,10 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
     const [shape, setShape] = useState(shapeProps);
     const [drag, setDrag] = useState(false);
     const [transform, setTransform] = useState(false);
+    const [edit, setEdit] = useState(false);
+    const [te, sette] = useState(0);
+    const [ta, setta] = useState(0);
+    const [rotated, setRotated] = useState(0);
 
 
     useEffect(() => {
@@ -15,6 +21,9 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
             // we need to attach transformer manually
             trRef.current.setNode(shapeRef.current);
             trRef.current.getLayer().batchDraw();
+        }
+        else {
+            setEdit(false);
         }
     }, [isSelected]);
 
@@ -27,6 +36,7 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
 
             >
                 <Group
+
                     draggable={!dummy}
                     onClick={dummy? null : onSelect}
                     ref={dummy? null:shapeRef}
@@ -63,6 +73,19 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                             height: Math.max(20, node.height() * scaleY)
                         };
                         setShape(s);
+                        setRotated(e.currentTarget.rotation());
+                        console.log(rotated)
+                    }}
+                    onDblClick={(e) => {
+                        console.log("triggeredasdadasdadss");
+                        const node = shapeRef.current;
+                        let x = e.currentTarget.getAbsolutePosition();
+                        let d = e.target.getStage().container().getBoundingClientRect();
+                        console.log(x);
+                        console.log(d);
+                        setta(d.left+x.x-(shape.width/2));
+                        sette(d.top+x.y-(shape.height/2));
+                        setEdit(!edit);
                     }}
                 >
                     <Rect
@@ -76,6 +99,36 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         offsetX={shape.width/2}
                         offsetY={shape.height/2}
                     />
+                    {edit && isSelected &&
+                        <Portal>
+                            <div style={{
+                                position:"absolute",
+                                height: shape.height,
+                                width:shape.width,
+                                top: te ,
+                                left: ta,
+                                transform: `rotate(`+rotated+`deg)`,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems:"center"
+                            }}
+                            >
+                                <Input defaultValue="submit" style={{
+                                    backgroundColor:"white",
+                                    width:"auto",
+                                    height:"auto",
+                                    textAlign:"center",
+                                    fontSize: shape.fontSize,
+                                    overflow:"auto"
+
+                                }}
+                                onChange={()=> {console.log("Button onchanged text trigger")}}
+                                >
+                                </Input>
+                            </div>
+
+                        </Portal>
+                    }
                     <Text
                         offsetX={(shape.width/2)-3}
                         offsetY={(shape.height/2)-3}
@@ -100,8 +153,6 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                 {isSelected && <Group
                     x={shape.x+((shape.width/2)+15)}
                     y={shape.y+((shape.height/2)+15)}
-
-
                 >
                     <Label
                         visible={drag}
@@ -156,6 +207,7 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         />
                     </Label>
                 </Group>}
+
             </Group>
         </React.Fragment>
 

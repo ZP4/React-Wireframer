@@ -17,19 +17,19 @@ export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
 export function registerSuccess() {
     return { type: 'REGISTER_SUCCESS' }
-};
+}
 export function registerError(error) { 
     return { type: 'REGISTER_ERROR', error }
-};
+}
 export function loginSuccess() {
     return { type: 'LOGIN_SUCCESS' }
-};
+}
 export function loginError(error) {
     return { type: 'LOGIN_ERROR', error }
-};
+}
 export function logoutSuccess() {
     return { type: 'LOGOUT_SUCCESS' }
-};
+}
 
 // THESE CREATORS MAKE ACTIONS FOR ASYNCHRONOUS TODO LIST UPDATES
 export function createTodoList(todoList) {
@@ -55,3 +55,4 @@ export function createTodoListError(error) {
         error
     }
 }
+

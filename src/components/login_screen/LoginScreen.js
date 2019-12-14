@@ -40,7 +40,7 @@ class LoginScreen extends Component {
   render() {
     const { auth, authError } = this.props;
     if (auth.uid) {
-      return <Redirect to="/" />;
+      return <Redirect to="/home" />;
     }
 
     return (

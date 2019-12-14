@@ -11,7 +11,7 @@ class RegisterScreen extends Component {
     password: '',
     firstName: '',
     lastName: '',
-  }
+  };
 
   handleChange = (e) => {
     const { target } = e;
@@ -20,22 +20,22 @@ class RegisterScreen extends Component {
       ...state,
       [target.id]: target.value,
     }));
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log("Loasd");
     const { props, state } = this;
     const { firebase } = props;
     const newUser = { ...state };
 
     props.register(newUser, firebase);
-  }
+  };
 
   render() {
     const { auth, authError } = this.props;
     if (auth.uid) {
-      return <Redirect to="/" />;
+      return <Redirect to="/login" />;
     }
 
     return (

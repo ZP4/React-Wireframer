@@ -12,8 +12,6 @@ class WireframesLinks extends  Component{
         console.log("linkssd");
         console.log(this.props.wireframe);
         const userWireframes = this.props.wireframe;
-        //userWireframes = userWireframes.sort((a, b) => (a.time > b.time) ? 1 : -1);
-
         return (
             <div>
                 {userWireframes && userWireframes
