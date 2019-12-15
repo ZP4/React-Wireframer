@@ -61,10 +61,15 @@ class DatabaseTester extends React.Component {
     render() {
         const { auth } = this.props;
         console.log(this.props.user);
-        if (!auth.uid || this.props.user === 0) {
+        if(!auth.uid) {
+            return (
+                <Redirect to="/login"/>
+            );
+        }
+        else if(this.props.user === 0) {
             if(this.state.seconds <= 0) {
                 return (
-                    <Redirect to="/login"/>
+                    <Redirect to="/home"/>
                 );
             }
             else {

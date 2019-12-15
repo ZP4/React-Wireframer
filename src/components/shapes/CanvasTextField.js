@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 
-const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy}) => {
+const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
-    const test = React.useRef();
 
     const [shape, setShape] = useState(shapeProps);
     const [drag, setDrag] = useState(false);
@@ -21,13 +20,14 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy}) => {
     return (
         <React.Fragment>
             <Group
-                onClick={dummy? () => {
-                    console.log("CLICKED")
+                onClick={dummy? (e) => {
+                    console.log('add text');
+                    onClick("text")
                 } : null}
             >
                 <Group
                     draggable={!dummy}
-                    onClick={dummy? null : onSelect}
+                    onClick={dummy? console.log("alololol") : onSelect}
                     ref={dummy? null:shapeRef}
                     {...shape}
                     onDragStart={() => {setDrag(true)}}
@@ -67,10 +67,10 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         strokeScaleEnabled={false}
                         height={shape.height}
                         width={shape.width}
-                        stroke="black"
-                        fill={shapeProps.fill}
-                        strokeWidth={2}
-                        cornerRadius={3}
+                        stroke={shape.strokeColor}
+                        fill={shape.fill}
+                        strokeWidth={shape.strokeWidth}
+                        cornerRadius={shape.cornerRadius}
                         offsetX={shape.width/2}
                         offsetY={shape.height/2}
                     />
@@ -81,24 +81,22 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         width={shape.width-6}
                         align="left"
                         verticalAlign="middle"
-                        text="Input"
-                        fontSize={16}
+                        text={shape.text}
+                        fontSize={shape.fontSize}
                         padding={4}
                     />
                 </Group>
                 {isSelected && <Transformer
+                    keepRatio={false}
                     ref={trRef}
                     rotateAnchorOffset={25}
                     rotationSnaps={[0, 90, 180,270]}
                     anchorSize={12}
                     padding={2}
-                    rotateEnabled={false}
                 />}
                 {isSelected && <Group
-                    x={shape.x}
-                    y={shape.y}
-                    offsetX={(shape.width+15)*-1}
-                    offsetY={(shape.height+15)*-1}
+                    x={shape.x+((shape.width/2)+15)}
+                    y={shape.y+((shape.height/2)+15)}
                 >
                     <Label
                         visible={drag}
@@ -132,7 +130,6 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     </Label>
                 </Group>}
                 {dummy && <Group
-                    draggable
                     x={shape.x-40}
                     y={shape.y+40}
 

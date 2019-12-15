@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 
-const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy}) => {
+const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy , onClick}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -20,8 +20,9 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy}) => {
     return (
         <React.Fragment>
             <Group
-                onClick={dummy? () => {
-                    console.log("CLICKED")
+                onClick={dummy? (e) => {
+                    console.log('add container');
+                    onClick("container")
                 } : null}
             >
                 <Rect
@@ -56,8 +57,8 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy}) => {
                             ...shape,
                             x: node.x(),
                             y: node.y(),
-                            width: Math.max(200, node.width() * scaleX),
-                            height: Math.max(200, node.height() * scaleY)
+                            width: Math.max(50, node.width() * scaleX),
+                            height: Math.max(50, node.height() * scaleY)
                         };
                         setShape(s);
                     }}
@@ -66,6 +67,7 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy}) => {
                 >
                 </Rect>
                 {isSelected && <Transformer
+                    keepRatio={false}
                     ref={trRef}
                     rotateAnchorOffset={25}
                     rotationSnaps={[0, 90, 180,270]}

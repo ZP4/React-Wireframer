@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 
-const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy}) => {
+const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -20,11 +20,12 @@ const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy}) => {
     return (
         <React.Fragment>
             <Group
-                onClick={dummy? () => {
-                    console.log("CLICKED")
+                onClick={dummy? (e) => {
+                    console.log('add label');
+                    onClick("label")
                 } : null}
             >
-                <Label
+                <Group
                     draggable={!dummy}
                     onClick={dummy? null : onSelect}
                     ref={dummy? null:shapeRef}
@@ -64,29 +65,33 @@ const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     offsetX={shape.width/2}
                     offsetY={shape.height/2}
                     >
-                    <Tag
-                        strokeScaleEnabled={false}
-                        height={shape.height}
-                        width={shape.width}
-                        stroke={shape.stroke}
-                        fill={shapeProps.fill}
-                        strokeWidth={shape.strokeWidth}
-                        cornerRadius={shape.cornerRadius}
+                    <Label>
+                        <Tag
+                            strokeScaleEnabled={false}
+                            height={shape.height}
+                            width={shape.width}
+                            stroke={shape.stroke}
+                            fill={shape.fill}
+                            strokeWidth={shape.strokeWidth}
+                            cornerRadius={shape.cornerRadius}
 
-                    />
-                    <Text
-                        offsetX={-3}
-                        offsetY={-3}
-                        height={shape.height-6}
-                        width={shape.width-6}
-                        align={shape.align}
-                        verticalAlign={shape.verticalAlign}
-                        text={shape.text}
-                        fontSize={shape.fontSize}
-                        padding={4}
-                    />
-                </Label>
+                        />
+                        <Text
+                            offsetX={-3}
+                            offsetY={-3}
+                            height={shape.height-6}
+                            width={shape.width-6}
+                            align="left"
+                            verticalAlign="middle"
+                            text={shape.text}
+                            fontSize={shape.fontSize}
+                            padding={4}
+                        />
+                    </Label>
+
+                </Group>
                 {isSelected && <Transformer
+                    keepRatio={false}
                     ref={trRef}
                     rotateAnchorOffset={25}
                     rotationSnaps={[0, 90, 180,270]}
@@ -95,10 +100,8 @@ const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy}) => {
                     rotateEnabled={false}
                 />}
                 {isSelected && <Group
-                    x={shape.x}
-                    y={shape.y}
-                    offsetX={(shape.width+15)*-1}
-                    offsetY={(shape.height+15)*-1}
+                    x={shape.x+((shape.width/2)+15)}
+                    y={shape.y+((shape.height/2)+15)}
                 >
                     <Label
                         visible={drag}

@@ -3,7 +3,7 @@ import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 import {Input} from "antd";
 import Portal from "../../core/Portal";
 
-const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
+const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -16,7 +16,43 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
     const [rotated, setRotated] = useState(0);
 
 
+    // {edit && isSelected &&
+    // <Portal>
+    //     <div style={{
+    //         position:"absolute",
+    //         height: shape.height,
+    //         width:shape.width,
+    //         top: te ,
+    //         left: ta,
+    //         transform: `rotate(`+rotated+`deg)`,
+    //         display: "flex",
+    //         justifyContent: "center",
+    //         alignItems:"center"
+    //     }}
+    //     >
+    //         <Input
+    //             value={shape.text}
+    //             style={{
+    //                 backgroundColor:"white",
+    //                 width:"auto",
+    //                 height:"auto",
+    //                 textAlign:"center",
+    //                 fontSize: shape.fontSize,
+    //                 overflow:"auto"
+    //             }}
+    //             onChange={(e)=> {setShape(
+    //                 {...shape,
+    //                     text: e.target.value}
+    //             )}}
+    //
+    //         >
+    //         </Input>
+    //     </div>
+    //
+    // </Portal>
+    // }
     useEffect(() => {
+        console.log("Button update");
         if (isSelected) {
             // we need to attach transformer manually
             trRef.current.setNode(shapeRef.current);
@@ -30,10 +66,10 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
     return (
         <React.Fragment>
             <Group
-                onClick={dummy? () => {
-                    console.log("CLICKED")
+                onClick={dummy? (e) => {
+                    console.log('add button');
+                    onClick("button")
                 } : null}
-
             >
                 <Group
 
@@ -76,59 +112,30 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         setRotated(e.currentTarget.rotation());
                         console.log(rotated)
                     }}
-                    onDblClick={(e) => {
-                        console.log("triggeredasdadasdadss");
-                        const node = shapeRef.current;
-                        let x = e.currentTarget.getAbsolutePosition();
-                        let d = e.target.getStage().container().getBoundingClientRect();
-                        console.log(x);
-                        console.log(d);
-                        setta(d.left+x.x-(shape.width/2));
-                        sette(d.top+x.y-(shape.height/2));
-                        setEdit(!edit);
-                    }}
+                    // onDblClick={(e) => {
+                    //     console.log("triggeredasdadasdadss");
+                    //     const node = shapeRef.current;
+                    //     let x = e.currentTarget.getAbsolutePosition();
+                    //     let d = e.target.getStage().container().getBoundingClientRect();
+                    //     console.log(x);
+                    //     console.log(d);
+                    //     setta(d.left+x.x-(shape.width/2));
+                    //     sette(d.top+x.y-(shape.height/2));
+                    //     setEdit(!edit);
+                    // }}
                 >
                     <Rect
                         strokeScaleEnabled={false}
                         height={shape.height}
                         width={shape.width}
-                        stroke="black"
-                        fill={shapeProps.fill}
-                        strokeWidth={1}
-                        cornerRadius={5}
+                        stroke={shape.strokeColor}
+                        fill={shape.fill}
+                        strokeWidth={shape.strokeWidth}
+                        cornerRadius={shape.cornerRadius}
                         offsetX={shape.width/2}
                         offsetY={shape.height/2}
                     />
-                    {edit && isSelected &&
-                        <Portal>
-                            <div style={{
-                                position:"absolute",
-                                height: shape.height,
-                                width:shape.width,
-                                top: te ,
-                                left: ta,
-                                transform: `rotate(`+rotated+`deg)`,
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems:"center"
-                            }}
-                            >
-                                <Input defaultValue="submit" style={{
-                                    backgroundColor:"white",
-                                    width:"auto",
-                                    height:"auto",
-                                    textAlign:"center",
-                                    fontSize: shape.fontSize,
-                                    overflow:"auto"
 
-                                }}
-                                onChange={()=> {console.log("Button onchanged text trigger")}}
-                                >
-                                </Input>
-                            </div>
-
-                        </Portal>
-                    }
                     <Text
                         offsetX={(shape.width/2)-3}
                         offsetY={(shape.height/2)-3}
@@ -136,13 +143,14 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy}) => {
                         width={shape.width-6}
                         align="center"
                         verticalAlign="middle"
-                        text="Submit"
-                        fontSize={13}
+                        text={shape.text}
+                        fontSize={shape.fontSize}
                         padding={4}
 
                     />
                 </Group>
                 {isSelected && <Transformer
+                    keepRatio={false}
                     ref={trRef}
                     rotateAnchorOffset={25}
                     rotationSnaps={[0, 90, 180,270]}

@@ -1,6 +1,9 @@
 import React, { useState, } from 'react';
 import { Stage, Layer, Rect} from 'react-konva';
 import CanvasButton from "../shapes/CanvasButton";
+import CanvasTextField from "../shapes/CanvasTextField";
+import CanvasLabel from "../shapes/CanvasLabel";
+import CanvasContainer from "../shapes/CanvasContainer";
 let initialRectangle = [
     {
         x: 0,
@@ -19,16 +22,12 @@ let initialRectangle = [
         id: 'rect2'
     }
 ];
-const Canvas = ({zoomInput }) => {
 
-    const [canvasHeight, setCanvasHeight] = useState(800);
-    const [canvasWidth, setCanvasWidth] = useState(1000);
+const Canvas = ({zoomInput, canvasHeight, canvasWidth, list, select, ID }) => {
     const [originX, setOriginX] = useState(2640+(canvasWidth/2));
     const [originY, setOriginY] = useState(2550+(canvasHeight/2));
-    const [zoom, setZoom] = useState(1);
 
-    const [selectedId, selectShape] = React.useState(null);
-    const [rectangles, setRectangles] = React.useState(initialRectangle);
+    const [rectangles, setRectangles] = React.useState(list);
 
 
 
@@ -36,17 +35,17 @@ const Canvas = ({zoomInput }) => {
 
         <Stage
             className="stage"
-            offsetY={-2500}
-            offsetX={-2500}
+            offsetY={-90}
+            offsetX={-90}
             width={5000}
             height={5000}
-            scaleX={zoom}
-            scaleY={zoom}
+            scaleY={zoomInput}
+            scaleX={zoomInput}
             onMouseDown={e => {
                 // deselect when clicked on empty area
                 const clickedOnEmpty = e.target === e.target.getStage();
                 if (clickedOnEmpty) {
-                    selectShape(null);
+                    select(null);
                 }
             }}
         >
@@ -54,7 +53,7 @@ const Canvas = ({zoomInput }) => {
                 onMouseDown={e => {
                     const clickedOnEmpty = e.target === e.target.getLayer();
                     if (clickedOnEmpty) {
-                        selectShape(null);
+                        select(null);
                     }
 
                 }}
@@ -66,22 +65,63 @@ const Canvas = ({zoomInput }) => {
                     y={0}
                     fill="white"
                     onMouseDown={e => {
-                        selectShape(null);
+                        select(null);
                     }}
 
                 />
                 {rectangles.map((rect, i) => {
-                    return (
-                        <CanvasButton
-                            key = {i}
-                            shapeProps={rect}
-                            isSelected={rect.id === selectedId}
-                            onSelect={() => {
-                                selectShape(rect.id);
-                            }}
+                    if(rect.type === "text") {
+                        return(
+                            <CanvasTextField
+                                key = {i}
+                                shapeProps={rect}
+                                isSelected={rect.id === ID}
+                                onSelect={() => {
+                                    select(rect.id);
+                                }}
+                            />
+                        );
+                    }
+                    else if(rect.type === "button") {
+                        return (
+                            <CanvasButton
+                                key = {i}
+                                shapeProps={rect}
+                                isSelected={rect.id === ID}
+                                onSelect={() => {
+                                    select(rect.id);
+                                }}
 
-                        />
-                    );
+                            />
+                        );
+                    }
+                    else if(rect.type === "container") {
+                        return (
+                            <CanvasContainer
+                                key = {i}
+                                shapeProps={rect}
+                                isSelected={rect.id === ID}
+                                onSelect={() => {
+                                    select(rect.id);
+                                }}
+
+                            />
+                        );
+                    }
+                    else if(rect.type === "label") {
+                        return (
+                            <CanvasLabel
+                                key = {i}
+                                shapeProps={rect}
+                                isSelected={rect.id === ID}
+                                onSelect={() => {
+                                    select(rect.id);
+                                }}
+
+                            />
+                        );
+                    }
+
                 })}
 
 
