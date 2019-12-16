@@ -32,7 +32,8 @@ class EditScreen extends Component {
         saved: true,
         textColor: "#fff",
         bgColor: "#fff",
-        borderColor: "#fff"
+        borderColor: "#fff",
+        settings: false
     };
 
 
@@ -612,8 +613,8 @@ class EditScreen extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     const {id} = ownProps.match.params;
-    // console.log(ownProps);
-    // console.log("ID: " + id);
+    //console.log(ownProps);
+    console.log("ID: " + id);
     // let wireframe1;
     // const firestore = getFirestore();
     // let doc = firestore.collection("wireframes").doc(state.firebase.auth.uid);
