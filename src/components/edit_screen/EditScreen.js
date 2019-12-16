@@ -192,12 +192,13 @@ class EditScreen extends Component {
     };
 
     selectShape = (shapeID) => {
-        console.log("shapeID: "+ shapeID);
+        //console.log("shapeID: "+ shapeID);
         let control = null;
         let index = this.state.controlList.findIndex(x => x.id === shapeID);
-        console.log("index: "+index);
+        //console.log("index: "+index);
         control = this.state.controlList[index];
-        console.log(control);
+
+        //console.log(control);
         this.setState({
             selectID: shapeID,
             selectedControl: control,
