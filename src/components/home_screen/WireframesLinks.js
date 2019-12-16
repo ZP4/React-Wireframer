@@ -17,7 +17,7 @@ class WireframesLinks extends  Component{
                 {userWireframes && userWireframes
                     .sort((a, b) => (a.time > b.time) ? -1 : 1)
                     .map((wireframe, i) => (
-                    <Link to={'/wireframe/' + wireframe.key} key={wireframe.key}>
+                    <Link to={'/wireframe/' + wireframe.key} key={wireframe.key} >
                         <WireframeCard wireframe={wireframe} deleteWireframe={this.props.deleteWireframe}/>
                     </Link>
                 ))}

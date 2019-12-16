@@ -520,21 +520,26 @@ class EditScreen extends Component {
                                 </Collapse.Panel>
                                 <Collapse.Panel key="Visual" header="Visual">
                                     {this.state.selectID && <div>
+                                        {this.state.selectedControl.type !== "container" &&
                                         <Row>
-                                            <Col span={12}>Text</Col>
+                                        <Col span={12}>Text</Col>
                                             <Col span={12}>
-                                                <Input placeholder="Text"
-                                                       value={this.state.selectID===null? null: this.state.selectedControl.text}
-                                                       onChange={(e) => {
-                                                           console.log("textrun");
-                                                           this.onChangeShape(e.target.value, "text")
-                                                       }}
-                                                       onChangeCapture={(e) => {
-                                                           this.onChangeShape(e.target.value, "text")
-                                                       }}
-                                                       type="textarea" size="small"/>
+                                            <Input placeholder="Text"
+                                            value={this.state.selectID===null? null: this.state.selectedControl.text}
+                                            onChange={(e) => {
+                                            console.log("textrun");
+                                            this.onChangeShape(e.target.value, "text")
+                                        }}
+                                            onChangeCapture={(e) => {
+                                            this.onChangeShape(e.target.value, "text")
+                                        }}
+                                            type="textarea" size="small"
+
+                                            />
                                             </Col>
-                                        </Row>
+                                            </Row>
+                                        }
+                                        {this.state.selectedControl.type !== "container" &&
                                         <Row>
                                             <Col span={12}>Font Size</Col>
                                             <Col span={12}>
@@ -548,6 +553,8 @@ class EditScreen extends Component {
                                                 />
                                             </Col>
                                         </Row>
+                                        }
+
                                         <Row>
                                             <Col span={12}>Stroke Thickness</Col>
                                             <Col span={12}>
@@ -562,18 +569,20 @@ class EditScreen extends Component {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col span={12}>Border Radius</Col>
+                                        <Col span={12}>Border Radius</Col>
                                             <Col span={12}>
-                                                <InputNumber size="small"  type="textarea" min={0} max={100}
-                                                             value={this.state.selectID===null? null: this.state.selectedControl.cornerRadius}
-                                                             onChange={
-                                                                 (e) => {
-                                                                     this.onChangeShape(e, "cornerRadius")
-                                                                 }
-                                                             }
-                                                />
+                                            <InputNumber size="small"  type="textarea" min={0} max={100}
+                                            value={this.state.selectID===null? null: this.state.selectedControl.cornerRadius}
+                                            onChange={
+                                            (e) => {
+                                                this.onChangeShape(e, "cornerRadius")
+                                            }
+                                        }
+                                            />
                                             </Col>
-                                        </Row>
+                                            </Row>
+
+                                        {this.state.selectedControl.type !== "container" &&
                                         <Row>
                                             <Col span={12}>Text Color</Col>
                                             <SketchPicker
@@ -583,6 +592,7 @@ class EditScreen extends Component {
                                                 }}
                                             />
                                         </Row>
+                                        }
                                         <Row>
                                             <Col span={12}>Background Color</Col>
                                                 <SketchPicker

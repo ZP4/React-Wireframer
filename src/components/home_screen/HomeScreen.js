@@ -145,7 +145,7 @@ class HomeScreen extends Component {
                             <WireframesLinks wireframe={this.props.wireframes} deleteWireframe={this.handleDeleteWireframe}/>
                         </Col>
                         <Col span={8} offset={4}>
-                            Wireframe maker
+                            <h3>Wireframe maker</h3>
                         </Col>
                     </Row>
                 </div>
