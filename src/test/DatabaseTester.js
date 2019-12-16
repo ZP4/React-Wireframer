@@ -13,7 +13,7 @@ class DatabaseTester extends React.Component {
     _isMounted= true;
     state = {
         seconds: 5,
-
+        admin: 0
     };
 
     componentDidMount() {
@@ -24,6 +24,14 @@ class DatabaseTester extends React.Component {
                 }))
             }, 1000);
         }
+        const firestore = getFirestore();
+        firestore.collection("users").doc(this.props.auth.uid).get()
+            .then((e) => {
+                let admin = e.get('admin');
+                this.setState({
+                    admin: admin
+                });
+            });
     }
 
     componentWillUnmount() {
@@ -85,13 +93,12 @@ class DatabaseTester extends React.Component {
 
     render() {
         const { auth } = this.props;
-        console.log(this.props.user);
         if(!auth.uid) {
             return (
-                <Redirect to="/login"/>
+                <Redirect to="/"/>
             );
         }
-        else if(false) {
+        else if(this.state.admin === 0) {
             if(this.state.seconds <= 0) {
                 return (
                     <Redirect to="/home"/>
@@ -125,16 +132,10 @@ const mapStateToProps = function (state) {
     return {
         auth: state.firebase.auth,
         firebase: state.firebase,
-        user: state.firestore.ordered.users && state.firestore.ordered.users[0]
     };
 };
 
 export default compose(
-    connect(({ firebase: { auth } }) => ({ auth })),
-    firestoreConnect(props => {
-        return [{
-            collection: 'users', doc: props.auth.uid
-        }]
-    }),
     connect(mapStateToProps),
+    firestoreConnect(),
 )(DatabaseTester);

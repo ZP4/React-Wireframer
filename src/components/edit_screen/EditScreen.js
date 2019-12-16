@@ -33,7 +33,7 @@ class EditScreen extends Component {
         textColor: "#fff",
         bgColor: "#fff",
         borderColor: "#fff",
-        settings: false
+        settings: true
     };
 
 
@@ -118,6 +118,12 @@ class EditScreen extends Component {
         }
     };
 
+    settingOnChange = () => {
+        this.setState({
+            settings: false
+        })
+    };
+
     handleTextColorChange = (color, event) => {
         this.onChangeShape(color.hex, "textColor");
         this.setState({
@@ -155,7 +161,8 @@ class EditScreen extends Component {
             wireframeHeight: window.document.getElementById("canvasheight").value,
             wireframeWidth: window.document.getElementById("canvaswidth").value,
             wireframeName: window.document.getElementById("wireframename").value,
-            saved: false
+            saved: false,
+            settings: true
         });
         message.success("Settings Updated")
     };
@@ -384,22 +391,22 @@ class EditScreen extends Component {
                                     <Button key="back" onClick={this.handleCancel}>
                                         Return
                                     </Button>,
-                                    <Button key="submit" type="primary" onClick={this.handleSettingsSubmit}>
+                                    <Button key="submit" type="primary" disabled={this.state.settings} onClick={this.handleSettingsSubmit}>
                                         Submit
                                     </Button>,
                                 ]}
                             ><div>
                                 <Form layout="horizontal" >
                                     <Form.Item label="Name">
-                                        <Input placeholder="Name" defaultValue={this.state.wireframeName} id="wireframename"/>
+                                        <Input placeholder="Name" defaultValue={this.state.wireframeName} id="wireframename" onChange={this.settingOnChange}/>
                                     </Form.Item>
                                     <Form.Item label="Width">
                                         <InputNumber type="textarea"  id="canvaswidth"
-                                                     max={5000} min={1} defaultValue={this.state.wireframeWidth}/>
+                                                     max={5000} min={1} defaultValue={this.state.wireframeWidth} onChange={this.settingOnChange}/>
                                     </Form.Item>
                                     <Form.Item label="Height">
                                         <InputNumber type="textarea" id="canvasheight"
-                                                     max={5000} min={1} defaultValue={this.state.wireframeHeight}/>
+                                                     max={5000} min={1} defaultValue={this.state.wireframeHeight} onChange={this.settingOnChange}/>
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -452,7 +459,7 @@ class EditScreen extends Component {
                                             id: 'dummyButton',
                                             strokeWidth: 1,
                                             text: "Button",
-                                            fontSize:"22",
+                                            fontSize:22,
                                             strokeColor: "black",
                                             cornerRadius: 5
                                         }}
@@ -469,7 +476,7 @@ class EditScreen extends Component {
                                             id: 'dummyTextField',
                                             strokeWidth: 1,
                                             text: "Input",
-                                            fontSize:"22",
+                                            fontSize:22,
                                             strokeColor: "black",
                                             cornerRadius: 3
                                         }}
@@ -615,6 +622,7 @@ const mapStateToProps = (state, ownProps) => {
     const {id} = ownProps.match.params;
     //console.log(ownProps);
     console.log("ID: " + id);
+    console.log(state.firestore.ordered.wireframes && state.firestore.ordered.wireframes[0].wireframes.find(x => x.key === id));
     // let wireframe1;
     // const firestore = getFirestore();
     // let doc = firestore.collection("wireframes").doc(state.firebase.auth.uid);
