@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 
-const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
+const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick, onChangeDim}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -17,6 +17,7 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick}) =>
         }
     }, [isSelected]);
 
+
     return (
         <React.Fragment>
             <Group
@@ -27,14 +28,19 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick}) =>
             >
                 <Group
                     draggable={!dummy}
-                    onClick={dummy? console.log("alololol") : onSelect}
+                    onClick={!dummy && !drag ? onSelect : null}
                     ref={dummy? null:shapeRef}
                     {...shape}
-                    onDragStart={() => {setDrag(true)}}
-                    onDragEnd={() => {setDrag(false);}}
+                    onDragStart={() => {setDrag(true);onSelect();}}
+                    onDragEnd={(e) => {
+                        setDrag(false);
+                        onSelect();
+                        onChangeDim(e.target.x(), "x");
+                        onChangeDim(e.target.y(), "y");
+                    }}
                     onDragMove={e => {
                         console.log("drag");
-                        onSelect();
+                        //onSelect();
                         let s = {
                             ...shape,
                             x: e.target.x(),
@@ -44,7 +50,19 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick}) =>
                     }}
 
                     onTransformStart={() => {setTransform(true)}}
-                    onTransformEnd={() => {setTransform(false)}}
+                    onTransformEnd={(e) => {
+                        setTransform(false);
+
+                        const node = shapeRef.current;
+                        const scaleX = node.scaleX();
+                        const scaleY = node.scaleY();
+                        node.scaleX(1);
+                        node.scaleY(1);
+                        onChangeDim(node.x(), "x");
+                        onChangeDim(node.y(), "y");
+                        onChangeDim(Math.max(20, node.width() * scaleX), "width");
+                        onChangeDim(Math.max(20, node.height() * scaleY), "height")
+                    }}
                     onTransform = {e => {
                         console.log("trans");
                         const node = shapeRef.current;
@@ -61,16 +79,17 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick}) =>
                             height: Math.max(20, node.height() * scaleY)
                         };
                         setShape(s);
+
                     }}
                 >
                     <Rect
                         strokeScaleEnabled={false}
                         height={shape.height}
                         width={shape.width}
-                        stroke={shape.strokeColor}
-                        fill={shape.fill}
-                        strokeWidth={shape.strokeWidth}
-                        cornerRadius={shape.cornerRadius}
+                        stroke={shapeProps.strokeColor}
+                        fill={shapeProps.fill}
+                        strokeWidth={shapeProps.strokeWidth}
+                        cornerRadius={shapeProps.cornerRadius}
                         offsetX={shape.width/2}
                         offsetY={shape.height/2}
                     />
@@ -80,9 +99,10 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick}) =>
                         height={shape.height-6}
                         width={shape.width-6}
                         align="left"
+                        fill={shapeProps.textColor}
                         verticalAlign="middle"
-                        text={shape.text}
-                        fontSize={shape.fontSize}
+                        text={shapeProps.text}
+                        fontSize={shapeProps.fontSize}
                         padding={4}
                     />
                 </Group>
@@ -132,7 +152,6 @@ const CanvasTextField = ({ shapeProps, isSelected, onSelect, dummy, onClick}) =>
                 {dummy && <Group
                     x={shape.x-40}
                     y={shape.y+40}
-
                 >
                     <Label
                         visible={dummy}

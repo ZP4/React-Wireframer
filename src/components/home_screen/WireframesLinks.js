@@ -17,8 +17,8 @@ class WireframesLinks extends  Component{
                 {userWireframes && userWireframes
                     .sort((a, b) => (a.time > b.time) ? -1 : 1)
                     .map((wireframe, i) => (
-                    <Link to={'/wireframe/' + i} key={i}>
-                        <WireframeCard wireframe={wireframe}/>
+                    <Link to={'/wireframe/' + wireframe.key} key={wireframe.key}>
+                        <WireframeCard wireframe={wireframe} deleteWireframe={this.props.deleteWireframe}/>
                     </Link>
                 ))}
             </div>
@@ -30,7 +30,7 @@ const mapStateToProps = (state) => {
     return {
         auth: state.firebase.auth,
         firestore: state.firestore
-}
+    }
 };
 
 export default compose(

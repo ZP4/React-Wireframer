@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 
-const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy , onClick}) => {
+const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy , onClick, onChangeDim}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -26,15 +26,21 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy , onClick}) =
                 } : null}
             >
                 <Rect
+                    strokeScaleEnabled={false}
                     draggable={!dummy}
-                    onClick={dummy? null : onSelect}
+                    onClick={!dummy && !drag ? onSelect : null}
                     ref={dummy? null:shapeRef}
                     {...shape}
-                    onDragStart={() => {setDrag(true)}}
-                    onDragEnd={() => {setDrag(false);}}
+                    onDragStart={() => {setDrag(true);onSelect();}}
+                    onDragEnd={(e) => {
+                        setDrag(false);
+                        onSelect();
+                        onChangeDim(e.target.x(), "x");
+                        onChangeDim(e.target.y(), "y");
+                    }}
                     onDragMove={e => {
                         console.log("drag");
-                        onSelect();
+                        //onSelect();
                         let s = {
                             ...shape,
                             x: e.target.x(),
@@ -44,7 +50,19 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy , onClick}) =
                     }}
 
                     onTransformStart={() => {setTransform(true)}}
-                    onTransformEnd={() => {setTransform(false)}}
+                    onTransformEnd={(e) => {
+                        setTransform(false);
+
+                        const node = shapeRef.current;
+                        const scaleX = node.scaleX();
+                        const scaleY = node.scaleY();
+                        node.scaleX(1);
+                        node.scaleY(1);
+                        onChangeDim(node.x(), "x");
+                        onChangeDim(node.y(), "y");
+                        onChangeDim(Math.max(20, node.width() * scaleX), "width");
+                        onChangeDim(Math.max(20, node.height() * scaleY), "height")
+                    }}
                     onTransform = {e => {
                         console.log("trans");
                         const node = shapeRef.current;
@@ -64,8 +82,14 @@ const CanvasContainer = ({ shapeProps, isSelected, onSelect, dummy , onClick}) =
                     }}
                     offsetX={shape.width/2}
                     offsetY={shape.height/2}
-                >
-                </Rect>
+                    height={shape.height}
+                    width={shape.width}
+                    stroke={shapeProps.strokeColor}
+                    fill={shapeProps.fill}
+                    strokeWidth={shapeProps.strokeWidth}
+                    cornerRadius={shapeProps.cornerRadius}
+                />
+
                 {isSelected && <Transformer
                     keepRatio={false}
                     ref={trRef}

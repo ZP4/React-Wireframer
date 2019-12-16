@@ -23,14 +23,20 @@ export const registerHandler = (newUser, firebase) => (dispatch, getState, { get
     firebase.auth().createUserWithEmailAndPassword(
         newUser.email,
         newUser.password
-    ).then(resp => firestore.collection('users').doc(resp.user.uid).set({
+    ).then(resp => {
+        firestore.collection('wireframes').doc(resp.user.uid).set({
+            id: resp.user.uid,
+            wireframes: []
+        });
+        firestore.collection('users').doc(resp.user.uid).set({
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         initials: `${newUser.firstName[0]}${newUser.lastName[0]}`,
         admin: 0
-    })).then(() => {
+    })}).then(() => {
         dispatch(actionCreators.registerSuccess);
     }).catch((err) => {
         dispatch(actionCreators.registerError);
     });
+
 };

@@ -1,0 +1,97 @@
+{
+  "wireframes": [
+    {
+      "controls": [
+        {
+          "type": "container",
+          "fill": "#351ae2",
+          "cornerRadius": 30,
+          "height": 100,
+          "width": 220,
+          "id": "suge2cfcl",
+          "strokeColor": "#db122d",
+          "strokeWidth": 7,
+          "x": 161,
+          "y": 31
+        },
+        {
+          "type": "label",
+          "cornerRadius": 5,
+          "text": "Give me good grade",
+          "textColor": "#f70909",
+          "fill": "darkgrey",
+          "height": 50,
+          "width": 473,
+          "id": "l4arp4ww2",
+          "strokeColor": "black",
+          "strokeWidth": 1,
+          "x": 278,
+          "y": 312,
+          "fontSize": 22
+        },
+        {
+          "type": "button",
+          "cornerRadius": 5,
+          "text": "Brother",
+          "fill": "darkgrey",
+          "height": 50,
+          "width": 473,
+          "id": "8by0cqyci",
+          "strokeColor": "#0fec71",
+          "strokeWidth": 1,
+          "x": 143,
+          "y": 150,
+          "fontSize": 22
+        },
+        {
+          "type": "button",
+          "cornerRadius": 5,
+          "text": "Pls",
+          "fill": "darkgrey",
+          "height": 50,
+          "width": 200,
+          "id": "nfg1tdxum",
+          "strokeColor": "#c3bfdd",
+          "strokeWidth": 1,
+          "x": 143,
+          "y": 400,
+          "fontSize": 22
+        }
+      ],
+      "height": 400,
+      "width": 400,
+      "name": "Test1",
+      "key": "j3c6behba"
+    },
+    {
+      "controls": [],
+      "height": 69,
+      "width": 420,
+      "name": "EMPTY WIREFRAME",
+      "key": "j3c6besss"
+    },
+    {
+      "controls": [
+        {
+          "type": "button",
+          "cornerRadius": 5,
+          "text": "gottem",
+          "fill": "darkgrey",
+          "height": 50,
+          "width": 200,
+          "id": "nfg1tdxum",
+          "strokeColor": "#c3bfdd",
+          "strokeWidth": 1,
+          "x": 143,
+          "y": 400,
+          "fontSize": 22
+        }
+      ],
+      "height": 1337,
+      "width": 1337,
+      "name": "Not so empty wireframe",
+      "key": "j3c6beas2"
+    }
+
+  ]
+}

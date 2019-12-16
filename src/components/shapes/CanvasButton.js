@@ -3,7 +3,7 @@ import { Rect, Text, Group, Transformer, Label, Tag} from 'react-konva'
 import {Input} from "antd";
 import Portal from "../../core/Portal";
 
-const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
+const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy, onClick, onChangeDim}) => {
     const shapeRef = React.useRef();
     const trRef = React.useRef();
 
@@ -11,8 +11,6 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
     const [drag, setDrag] = useState(false);
     const [transform, setTransform] = useState(false);
     const [edit, setEdit] = useState(false);
-    const [te, sette] = useState(0);
-    const [ta, setta] = useState(0);
     const [rotated, setRotated] = useState(0);
 
 
@@ -74,14 +72,19 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
                 <Group
 
                     draggable={!dummy}
-                    onClick={dummy? null : onSelect}
+                    onClick={!dummy && !drag ? onSelect : null}
                     ref={dummy? null:shapeRef}
                     {...shape}
-                    onDragStart={() => {setDrag(true)}}
-                    onDragEnd={() => {setDrag(false);}}
+                    onDragStart={() => {setDrag(true);onSelect();}}
+                    onDragEnd={(e) => {
+                        setDrag(false);
+                        onSelect();
+                        onChangeDim(e.target.x(), "x");
+                        onChangeDim(e.target.y(), "y");
+                    }}
                     onDragMove={e => {
                         console.log("drag");
-                        onSelect();
+                        //onSelect();
 
                         let s = {
                             ...shape,
@@ -92,7 +95,19 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
                     }}
 
                     onTransformStart={() => {setTransform(true)}}
-                    onTransformEnd={() => {setTransform(false)}}
+                    onTransformEnd={(e) => {
+                        setTransform(false);
+
+                        const node = shapeRef.current;
+                        const scaleX = node.scaleX();
+                        const scaleY = node.scaleY();
+                        node.scaleX(1);
+                        node.scaleY(1);
+                        onChangeDim(node.x(), "x");
+                        onChangeDim(node.y(), "y");
+                        onChangeDim(Math.max(20, node.width() * scaleX), "width");
+                        onChangeDim(Math.max(20, node.height() * scaleY), "height")
+                    }}
                     onTransform = {e => {
                         console.log("trans");
                         const node = shapeRef.current;
@@ -128,23 +143,24 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy, onClick}) => {
                         strokeScaleEnabled={false}
                         height={shape.height}
                         width={shape.width}
-                        stroke={shape.strokeColor}
-                        fill={shape.fill}
-                        strokeWidth={shape.strokeWidth}
-                        cornerRadius={shape.cornerRadius}
-                        offsetX={shape.width/2}
-                        offsetY={shape.height/2}
+                        stroke={shapeProps.strokeColor}
+                        fill={shapeProps.fill}
+                        strokeWidth={shapeProps.strokeWidth}
+                        cornerRadius={shapeProps.cornerRadius}
+                        offsetX={shapeProps.width/2}
+                        offsetY={shapeProps.height/2}
                     />
 
                     <Text
-                        offsetX={(shape.width/2)-3}
-                        offsetY={(shape.height/2)-3}
-                        height={shape.height-6}
-                        width={shape.width-6}
+                        offsetX={(shapeProps.width/2)-3}
+                        offsetY={(shapeProps.height/2)-3}
+                        height={shapeProps.height-6}
+                        width={shapeProps.width-6}
+                        fill={shapeProps.textColor}
                         align="center"
                         verticalAlign="middle"
-                        text={shape.text}
-                        fontSize={shape.fontSize}
+                        text={shapeProps.text}
+                        fontSize={shapeProps.fontSize}
                         padding={4}
 
                     />

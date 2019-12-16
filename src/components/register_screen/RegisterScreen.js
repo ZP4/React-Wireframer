@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 import { Redirect } from 'react-router-dom';
+import firebase from "firebase";
+import { getFirestore } from "redux-firestore";
 import { registerHandler } from '../../store/database/asynchHandler'
 
 class RegisterScreen extends Component {
@@ -28,8 +30,10 @@ class RegisterScreen extends Component {
     const { props, state } = this;
     const { firebase } = props;
     const newUser = { ...state };
+    const firestore = getFirestore();
 
     props.register(newUser, firebase);
+
   };
 
   render() {
