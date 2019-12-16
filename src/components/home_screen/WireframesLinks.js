@@ -9,8 +9,8 @@ class WireframesLinks extends  Component{
 
 
     render() {
-        console.log("linkssd");
-        console.log(this.props.wireframe);
+        //console.log("linkssd");
+        //console.log(this.props.wireframe);
         const userWireframes = this.props.wireframe;
         return (
             <div>

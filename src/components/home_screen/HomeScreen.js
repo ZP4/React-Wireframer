@@ -81,7 +81,7 @@ class HomeScreen extends Component {
     };
 
     handleNewList = (e) => {
-        console.log(this.props.wireframes);
+        //console.log(this.props.wireframes);
         // let date = new Date();
         // let le = 0;
         // if(this.props.todoLists === null) {

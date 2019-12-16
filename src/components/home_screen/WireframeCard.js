@@ -22,8 +22,8 @@ class WireframeCard extends Component {
 
 
     render() {
-        console.log(this.props.deleteWireframe);
-        console.log(this.props.auth.uid);
+        //console.log(this.props.deleteWireframe);
+        //console.log(this.props.auth.uid);
         const { wireframe } = this.props;
         return (
             <div>

@@ -125,7 +125,7 @@ const CanvasButton = ({ shapeProps, isSelected, onSelect, dummy, onClick, onChan
                         };
                         setShape(s);
                         setRotated(e.currentTarget.rotation());
-                        console.log(rotated)
+                        //console.log(rotated)
                     }}
                     // onDblClick={(e) => {
                     //     console.log("triggeredasdadasdadss");

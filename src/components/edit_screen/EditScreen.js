@@ -83,8 +83,8 @@ class EditScreen extends Component {
             key: this.props.wireframe.key,
             time: date.toString()
         };
-        console.log(this.props.wireframes);
-        console.log(this.props.wireframe.key);
+        //console.log(this.props.wireframes);
+        //console.log(this.props.wireframe.key);
         firestore.collection("wireframes").doc(this.props.auth.uid).update({
             wireframes: firebase.firestore.FieldValue.arrayRemove(this.props.wireframe)
         });
@@ -154,7 +154,7 @@ class EditScreen extends Component {
     };
 
     handleSettingsSubmit = e => {
-        console.log(e.target);
+        //console.log(e.target);
 
         this.setState({
             modalVisible: false,
@@ -275,12 +275,12 @@ class EditScreen extends Component {
 
     onChangeShape = (value, type) => {
         let index = this.state.controlList.findIndex(x => x.id === this.state.selectID);
-        console.log("index: "+index);
-        console.log(this.state.controlList[index]);
+        //console.log("index: "+index);
+        //console.log(this.state.controlList[index]);
         let control = this.state.controlList[index];
         control[type] = value;
-        console.log("after");
-        console.log(this.state.controlList[index]);
+        //console.log("after");
+        //console.log(this.state.controlList[index]);
         //control.text = value;
         //console.log(control);/
 
@@ -297,8 +297,8 @@ class EditScreen extends Component {
         let dupe = this.state.selectedControl;
         dupe = {
             ...dupe,
-            x: dupe.x+20,
-            y: dupe.y+20,
+            x: dupe.x+100,
+            y: dupe.y+100,
             id: Math.random().toString(36).substr(2, 9),
         };
         list.push(
@@ -632,8 +632,8 @@ class EditScreen extends Component {
 const mapStateToProps = (state, ownProps) => {
     const {id} = ownProps.match.params;
     //console.log(ownProps);
-    console.log("ID: " + id);
-    console.log(state.firestore.ordered.wireframes && state.firestore.ordered.wireframes[0].wireframes.find(x => x.key === id));
+    //console.log("ID: " + id);
+    //console.log(state.firestore.ordered.wireframes && state.firestore.ordered.wireframes[0].wireframes.find(x => x.key === id));
     // let wireframe1;
     // const firestore = getFirestore();
     // let doc = firestore.collection("wireframes").doc(state.firebase.auth.uid);

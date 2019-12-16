@@ -115,7 +115,6 @@ const CanvasLabel = ({ shapeProps, isSelected, onSelect, dummy, onClick, onChang
                     rotationSnaps={[0, 90, 180,270]}
                     anchorSize={12}
                     padding={2}
-                    rotateEnabled={false}
                 />}
                 {isSelected && <Group
                     x={shape.x+((shape.width/2)+15)}
